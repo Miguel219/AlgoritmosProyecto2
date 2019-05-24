@@ -78,9 +78,11 @@ public class SearchUserController {
 		Transaction tx = db.beginTx();
 		try {
 			Result result = db.execute(
-					  "MATCH (u:User)" +
-					  "WHERE u.name = ''" +
-					  "RETURN u.name");
+					  "MATCH (u:User) -[:LIKES]-> (m:Movie)" +
+					  "WHERE u.name = '"+ userLoggedIn +"'" +
+					  "MATCH (u2:User) -[:LIKES]-> (m:Movie)" +
+					  "WHERE u2.name <> u.name " +
+					  "RETURN u2.name");
 			tx.success();
 			if(result.hasNext()) {
 				searchFlowPane.getChildren().clear();
@@ -88,7 +90,7 @@ public class SearchUserController {
 				while (result.hasNext()) {
 					
 					Map<String, Object> user = result.next();
-					String userName = (String) user.get("u.name");
+					String userName = (String) user.get("u2.name");
 					
 					Label label = new Label(userName + "   ");
 					label.setFont(new Font(18));
@@ -103,7 +105,8 @@ public class SearchUserController {
 							// TODO Auto-generated method stub
 							Button currentButton = (Button)event.getSource();
 							String userName = currentButton.getId();
-							
+							main = new Main();
+							main.changeToList(userLoggedIn, userName);
 						}
 					});
 					Region p = new Region();

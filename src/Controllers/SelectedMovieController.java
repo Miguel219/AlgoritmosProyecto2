@@ -208,6 +208,14 @@ public class SelectedMovieController {
 	public void setMovieId(String movieId) {
 		this.movieId = movieId;
 	}
+	
+	public void goToRecommendedByMovie(){
+		
+		db.shutdown();
+		main = new Main();
+		main.changeToRecommendedByMovie(userLoggedIn, movieId);
+		
+	}
 
 	public void goToAccount(){
 

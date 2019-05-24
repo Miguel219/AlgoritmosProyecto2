@@ -153,6 +153,50 @@ public class Main extends Application {
 		}
 	}
 	
+	public void changeToRecommendedByMovie(String userName, String movieId) {
+		try {
+			
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("/Views/RecommendedByMovie.fxml"));
+			Parent newScene = loader.load();
+			
+			//Se envian los datos del usuario
+			RecommendedByMovieController rbmc = loader.getController();
+			rbmc.setUserLoggedIn(userName);
+			rbmc.setMovieId(movieId);
+			rbmc.llenarClase();
+			
+			Scene scene = new Scene(newScene,400,550);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void changeToList(String userName, String selectedUserName) {
+		try {
+			
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("/Views/List.fxml"));
+			Parent newScene = loader.load();
+			
+			//Se envian los datos del usuario
+			ListController lc = loader.getController();
+			lc.setUserLoggedIn(userName);
+			lc.setSelectedUserName(selectedUserName);
+			lc.llenarClase();
+			
+			Scene scene = new Scene(newScene,400,550);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}

@@ -78,14 +78,14 @@ public class RecommendedByListController {
 		Transaction tx = db.beginTx();
 		try {
 			Result result = db.execute(
-					  "MATCH (u:User) -[:LIKES]-> (m:Movie)" +
-					  "WHERE u.name = '"+ userLoggedIn +"'" +
-					  "MATCH (m2:Movie)" +
-					  "WHERE (m2.genre = m.genre or m2.actor = m.actor or m2.director = m.director or m2.producer = m.producer) and m2.id <> m.id and m2.popularity >= m.popularity " +
+					  "MATCH (m2:Movie), (u:User) -[:LIKES]-> (m:Movie)" +
+					  "WHERE (m2.genre = m.genre or m2.actor = m.actor or m2.director = m.director or m2.producer = m.producer) and m2.id <> m.id and m2.popularity >= m.popularity and u.name = '"+ userLoggedIn +"' " +
 					  "RETURN m2.id, m2.name LIMIT 10");
 			tx.success();
 			if(result.hasNext()) {
 				searchFlowPane.getChildren().clear();
+				
+				ArrayList<String> moviesId = new ArrayList<>();
 				
 				while (result.hasNext()) {
 					
@@ -93,35 +93,39 @@ public class RecommendedByListController {
 					String movieId = (String) movie.get("m2.id");
 					String movieName = (String) movie.get("m2.name");
 					
-					Label label = new Label(movieName + "   ");
-					label.setFont(new Font(18));
-					Button button = new Button();
-					button.setId(movieId);
-					button.setText("Ver Película");
-					button.setStyle("-fx-background-color: lime;");
-					button.setOnAction(new EventHandler<ActionEvent>() {
-						
-						@Override
-						public void handle(ActionEvent event) {
-							// TODO Auto-generated method stub
-							Button currentButton = (Button)event.getSource();
-							String movieId = currentButton.getId();
-							main = new Main();
-							main.changeToSelectedMovie(userLoggedIn, movieId);
+					if(!moviesId.contains(movieId) && moviesId.size() < 10) {
+					
+						moviesId.add(movieId);
+						Label label = new Label(movieName + "   ");
+						label.setFont(new Font(18));
+						Button button = new Button();
+						button.setId(movieId);
+						button.setText("Ver Película");
+						button.setStyle("-fx-background-color: lime;");
+						button.setOnAction(new EventHandler<ActionEvent>() {
 							
-						}
-					});
-					Region p = new Region();
-					p.setPrefSize(497.0, 4.0);
-					Line line = new Line(0, 0, 500, 0);
-					Region p1 = new Region();
-					p1.setPrefSize(497.0, 4.0);
-					//Se agregan al FlowPane
-					searchFlowPane.getChildren().add(label);
-					searchFlowPane.getChildren().add(button);
-					searchFlowPane.getChildren().add(p);
-					searchFlowPane.getChildren().add(line);
-					searchFlowPane.getChildren().add(p1);
+							@Override
+							public void handle(ActionEvent event) {
+								// TODO Auto-generated method stub
+								Button currentButton = (Button)event.getSource();
+								String movieId = currentButton.getId();
+								main = new Main();
+								main.changeToSelectedMovie(userLoggedIn, movieId);
+								
+							}
+						});
+						Region p = new Region();
+						p.setPrefSize(497.0, 4.0);
+						Line line = new Line(0, 0, 500, 0);
+						Region p1 = new Region();
+						p1.setPrefSize(497.0, 4.0);
+						//Se agregan al FlowPane
+						searchFlowPane.getChildren().add(label);
+						searchFlowPane.getChildren().add(button);
+						searchFlowPane.getChildren().add(p);
+						searchFlowPane.getChildren().add(line);
+						searchFlowPane.getChildren().add(p1);
+					}
 					
 				};
 				
@@ -204,7 +208,6 @@ public class RecommendedByListController {
 			searchImage.setFitHeight(50);
 			searchImage.setFitWidth(50);
 			search.setGraphic(searchImage);
-			search.setDisable(true);
 
 			ImageView listImage = new ImageView(new Image(this.getClass().getResource("/images/list.png").toString()));
 			listImage.setFitHeight(50);

@@ -39,14 +39,12 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 
 
-public class SearchMovieController {
+public class ListController {
 
 	private Main main;
 	
 	@FXML	
 	private FlowPane searchFlowPane;
-	@FXML	
-	private TextField movieNameTextField;
 	@FXML
 	private Button account;
 	@FXML
@@ -55,10 +53,12 @@ public class SearchMovieController {
 	private Button search;
 	@FXML
 	private Button list;
-	
-	private String movieName;
+	@FXML
+	private Button button;
 	
 	private String userLoggedIn;
+	
+	private String selectedUserName;
 	
 	private static void registerShutdownHook( final GraphDatabaseService graphDb )
     {
@@ -75,79 +75,71 @@ public class SearchMovieController {
         } );
     }
 	
-	public void buscarPeliculas() {
-		
-		Boolean verificado = verificarDatos();
-		if (verificado == true) {
-			//Se crea el servicio de la base de datos
-			GraphDatabaseService db = new GraphDatabaseFactory().newEmbeddedDatabase(new File("./moviesDb/"));
-			registerShutdownHook(db);
-			Transaction tx = db.beginTx();
-			try {
-				Result result = db.execute(
-						  "MATCH (m:Movie)" +
-						  "WHERE m.name =~ '.*"+ movieName +".*'" +
-						  "RETURN m.name, m.id");
-				tx.success();
-				if(result.hasNext()) {
-					searchFlowPane.getChildren().clear();
-					
-					while (result.hasNext()) {
-						
-						Map<String, Object> user = result.next();
-						String movieName = (String) user.get("m.name");
-						String movieId = (String) user.get("m.id");
-						
-						Label label = new Label(movieName + "   ");
-						label.setFont(new Font(18));
-						Button button = new Button();
-						button.setId(movieId);
-						button.setText("Ver Película");
-						button.setStyle("-fx-background-color: lime;");
-						button.setOnAction(new EventHandler<ActionEvent>() {
-							
-							@Override
-							public void handle(ActionEvent event) {
-								// TODO Auto-generated method stub
-								Button currentButton = (Button)event.getSource();
-								String movieId = currentButton.getId();
-								main = new Main();
-								main.changeToSelectedMovie(userLoggedIn, movieId);
-							}
-						});
-						Region p = new Region();
-						p.setPrefSize(497.0, 4.0);
-						Line line = new Line(0, 0, 500, 0);
-						Region p1 = new Region();
-						p1.setPrefSize(497.0, 4.0);
-						//Se agregan al FlowPane
-						searchFlowPane.getChildren().add(label);
-						searchFlowPane.getChildren().add(button);
-						searchFlowPane.getChildren().add(p);
-						searchFlowPane.getChildren().add(line);
-						searchFlowPane.getChildren().add(p1);
-						
-					};
-					
-				}else {
-					Alert alert = new Alert(AlertType.ERROR);
-					alert.setTitle("Error");
-					alert.setHeaderText("Error al buscar la película");
-					alert.setContentText("No hay ninguna palícula con ese nombre");
-					alert.showAndWait();
-				}
+	public void verLista() {
+		//Se crea el servicio de la base de datos
+		GraphDatabaseService db = new GraphDatabaseFactory().newEmbeddedDatabase(new File("./moviesDb/"));
+		registerShutdownHook(db);
+		Transaction tx = db.beginTx();
+		try {
+			Result result = db.execute(
+					  "MATCH (u:User) -[:LIKES]-> (m:Movie)" +
+					  "WHERE u.name = '"+ selectedUserName +"'" +
+					  "RETURN m.id, m.name");
+			tx.success();
+			if(result.hasNext()) {
+				searchFlowPane.getChildren().clear();
 				
-			} finally {
-				tx.close();
-				db.shutdown();
+				while (result.hasNext()) {
+					
+					Map<String, Object> movie = result.next();
+					String movieId = (String) movie.get("m.id");
+					String movieName = (String) movie.get("m.name");
+					
+					Label label = new Label(movieName+ "   ");
+					label.setFont(new Font(18));
+					Button button = new Button();
+					button.setId(movieId);
+					button.setText("Ver Película");
+					button.setStyle("-fx-background-color: lime;");
+					button.setOnAction(new EventHandler<ActionEvent>() {
+						
+						@Override
+						public void handle(ActionEvent event) {
+							// TODO Auto-generated method stub
+							Button currentButton = (Button)event.getSource();
+							String movieId = currentButton.getId();
+							main = new Main();
+							main.changeToSelectedMovie(userLoggedIn, movieId);
+							
+						}
+					});
+					Region p = new Region();
+					p.setPrefSize(497.0, 4.0);
+					Line line = new Line(0, 0, 500, 0);
+					Region p1 = new Region();
+					p1.setPrefSize(497.0, 4.0);
+					//Se agregan al FlowPane
+					searchFlowPane.getChildren().add(label);
+					searchFlowPane.getChildren().add(button);
+					searchFlowPane.getChildren().add(p);
+					searchFlowPane.getChildren().add(line);
+					searchFlowPane.getChildren().add(p1);
+					
+				};
+				
+			}else {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText("No se encontraron peliculas en tu lista");
+				alert.setContentText("Agrega películas a tu lista");
+				alert.showAndWait();
+				
+				button.setDisable(true);
 			}
-		}else if (verificado == false) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("Error en datos ingresados");
-			alert.setContentText("Verifica tus datos ingresados");
-
-			alert.showAndWait();
+			
+		} finally {
+			tx.close();
+			db.shutdown();
 		}
 	}
 	
@@ -168,18 +160,19 @@ public class SearchMovieController {
 	public void setUserLoggedIn(String userLoggedIn) {
 		this.userLoggedIn = userLoggedIn;
 	}
+	
+	/**
+	 * @return the selectedUserName
+	 */
+	public String getSelectedUserName() {
+		return selectedUserName;
+	}
 
-
-
-	public Boolean verificarDatos() {
-		try {
-			movieName = movieNameTextField.getText();
-		    return true;
-		} catch (Exception e) {
-			// TODO: handle exception
-			return false;
-		}
-		
+	/**
+	 * @param selectedUserName the selectedUserName to set
+	 */
+	public void setSelectedUserName(String selectedUserName) {
+		this.selectedUserName = selectedUserName;
 	}
 	
 	public void goToAccount(){
@@ -224,7 +217,6 @@ public class SearchMovieController {
 			movieImage.setFitHeight(50);
 			movieImage.setFitWidth(50);
 			movie.setGraphic(movieImage);
-			movie.setDisable(true);
 			
 			ImageView searchImage = new ImageView(new Image(this.getClass().getResource("/images/search.png").toString()));
 			searchImage.setFitHeight(50);
@@ -238,6 +230,9 @@ public class SearchMovieController {
 		}catch (Exception e) {
 			// TODO: handle exception
 		}
+		
+		//Llenar de usuarios recomendados
+		verLista();
 	}
 	
 }
