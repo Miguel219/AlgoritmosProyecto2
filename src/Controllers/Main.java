@@ -51,7 +51,7 @@ public class Main extends Application {
 		try {
 			
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(Main.class.getResource("/application/searchUser.fxml"));
+			loader.setLocation(Main.class.getResource("/Views/SearchUser.fxml"));
 			Parent newScene = loader.load();
 			
 			//Se envian los datos del usuario
@@ -72,13 +72,35 @@ public class Main extends Application {
 		try {
 			
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(Main.class.getResource("/application/searchMovie.fxml"));
+			loader.setLocation(Main.class.getResource("/Views/SearchMovie.fxml"));
 			Parent newScene = loader.load();
 			
 			//Se envian los datos del usuario
 			SearchMovieController smc = loader.getController();
 			smc.setUserLoggedIn(userName);
 			smc.llenarClase();
+			
+			Scene scene = new Scene(newScene,400,550);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void changeToSelectedMovie(String userName, String movieId) {
+		try {
+			
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("/Views/SelectedMovie.fxml"));
+			Parent newScene = loader.load();
+			
+			//Se envian los datos del usuario
+			SelectedMovieController ssmc = loader.getController();
+			ssmc.setUserLoggedIn(userName);
+			ssmc.setMovieId(movieId);
+			ssmc.llenarClase();
 			
 			Scene scene = new Scene(newScene,400,550);
 			primaryStage.setScene(scene);

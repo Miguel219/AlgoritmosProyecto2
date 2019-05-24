@@ -86,6 +86,13 @@ public class ReadExcel {
 						}
 					}
 					
+				    String[] actors = actor.split("\"\"");
+					if(actors.length >= 3) {
+						actor = actors[3];
+					}else {
+						actor = "";
+					}
+					
 					if(actor!="" && director!="" && producer!="") {
 						counter = counter + 1;
 						Movie currentMovie = new Movie(id, name, actor, director, producer, "", "", "");

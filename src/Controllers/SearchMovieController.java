@@ -85,9 +85,9 @@ public class SearchMovieController {
 			Transaction tx = db.beginTx();
 			try {
 				Result result = db.execute(
-						  "MATCH (u:User)" +
-						  "WHERE u.name LIKE'"+ tagName +"'" +
-						  "RETURN u.name");
+						  "MATCH (m:Movie)" +
+						  "WHERE m.name =~ '.*"+ movieName +".*'" +
+						  "RETURN m.name, m.id");
 				tx.success();
 				if(result.hasNext()) {
 					searchFlowPane.getChildren().clear();
@@ -95,13 +95,14 @@ public class SearchMovieController {
 					while (result.hasNext()) {
 						
 						Map<String, Object> user = result.next();
-						String userName = (String) user.get("u.name");
+						String movieName = (String) user.get("m.name");
+						String movieId = (String) user.get("m.id");
 						
-						Label label = new Label(userName);
+						Label label = new Label(movieName + "   ");
 						label.setFont(new Font(18));
 						Button button = new Button();
-						button.setId(userName);
-						button.setText("Ver lista");
+						button.setId(movieId);
+						button.setText("Ver Película");
 						button.setStyle("-fx-background-color: lime;");
 						button.setOnAction(new EventHandler<ActionEvent>() {
 							
@@ -109,34 +110,9 @@ public class SearchMovieController {
 							public void handle(ActionEvent event) {
 								// TODO Auto-generated method stub
 								Button currentButton = (Button)event.getSource();
-								int tagId = Integer.parseInt(currentButton.getId());
-								try {
-									boolean seguido = miUsuario.seguirTag(tagId,userLoggedIn.getUserId());
-									if(seguido==true) {
-										
-										ResultSet tagsSeguidosPorUsuario = miUsuario.buscarTagsSeguidosPorUsuario(userLoggedIn.getUserId());
-										if(tagsSeguidosPorUsuario!=null) {
-											userLoggedIn.ingresarTags(tagsSeguidosPorUsuario);
-										}
-										currentButton.setText("Seguido");
-										currentButton.setDisable(true);
-										currentButton.setStyle("-fx-background-color: #adff2f;");
-										
-									}else {
-										Alert alert = new Alert(AlertType.ERROR);
-										alert.setTitle("Error");
-										alert.setHeaderText("Error al seguir el tags");
-										alert.setContentText("La relacion ya existe");
-										alert.showAndWait();
-									}
-								} catch (SQLException e) {
-									// TODO Auto-generated catch block
-									Alert alert = new Alert(AlertType.ERROR);
-									alert.setTitle("Error");
-									alert.setHeaderText("Error de base de datos");
-									alert.setContentText("Error al hacer la relacion en base datos");
-									alert.showAndWait();
-								}
+								String movieId = currentButton.getId();
+								main = new Main();
+								main.changeToSelectedMovie(userLoggedIn, movieId);
 							}
 						});
 						Region p = new Region();
@@ -156,19 +132,14 @@ public class SearchMovieController {
 				}else {
 					Alert alert = new Alert(AlertType.ERROR);
 					alert.setTitle("Error");
-					alert.setHeaderText("Error al buscar tags");
-					alert.setContentText("No hay ningun tag con ese nombre");
+					alert.setHeaderText("Error al buscar la película");
+					alert.setContentText("No hay ninguna palícula con ese nombre");
 					alert.showAndWait();
 				}
 				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error");
-				alert.setHeaderText("Error de conexion");
-				alert.setContentText("Error al buscar en base de datos");
-
-				alert.showAndWait();
+			} finally {
+				tx.close();
+				db.shutdown();
 			}
 		}else if (verificado == false) {
 			Alert alert = new Alert(AlertType.ERROR);
