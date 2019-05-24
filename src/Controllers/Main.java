@@ -47,6 +47,48 @@ public class Main extends Application {
 		}
 	}
 	
+	public void changeToSearch(String userName) {
+		try {
+			
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("/application/searchUser.fxml"));
+			Parent newScene = loader.load();
+			
+			//Se envian los datos del usuario
+			SearchUserController suc = loader.getController();
+			suc.setUserLoggedIn(userName);
+			suc.llenarClase();
+			
+			Scene scene = new Scene(newScene,400,550);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void changeToMovie(String userName) {
+		try {
+			
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("/application/searchMovie.fxml"));
+			Parent newScene = loader.load();
+			
+			//Se envian los datos del usuario
+			SearchMovieController smc = loader.getController();
+			smc.setUserLoggedIn(userName);
+			smc.llenarClase();
+			
+			Scene scene = new Scene(newScene,400,550);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}

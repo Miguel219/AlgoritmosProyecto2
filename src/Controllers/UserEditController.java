@@ -42,14 +42,14 @@ public class UserEditController {
 	@FXML
 	private Button account;
 	@FXML
-	private Button home;
+	private Button movie;
 	@FXML
 	private Button search;
 	@FXML
-	private Button pin;
+	private Button list;
 
 	private String nombre;
-	private Integer numero;
+	private String numero;
 	private String correoe;
 	
 	private String userLoggedIn;
@@ -73,16 +73,61 @@ public class UserEditController {
 		
 		Boolean verificado = verificarDatos();
 		if (verificado == true) {
+			//Se crea el servicio de la base de datos
+			GraphDatabaseService db = new GraphDatabaseFactory().newEmbeddedDatabase(new File("./moviesDb/"));
+			registerShutdownHook(db);
+			Transaction tx = db.beginTx();
 			try {
-				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error");
-				alert.setHeaderText("Error de conexion");
-				alert.setContentText("Error al guardar en base de datos");
-
-				alert.showAndWait();
+				Result result = db.execute(
+						  "MATCH (u:User)" +
+						  "WHERE u.name='"+ nombre +"'" +
+						  "RETURN u.name");
+				tx.success();
+				if(result.hasNext()) {
+					Map<String, Object> user = result.next();
+					String userName = (String) user.get("u.name");
+					if(!userLoggedIn.equals(userName)) {
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("Error");
+						alert.setHeaderText("Error en actualizar");
+						alert.setContentText("El nombre del uzuario ya ha sido utilizado");
+	
+						alert.showAndWait();
+					}else {
+						Result result1 = db.execute("MATCH (u:User)" +
+								  "WHERE u.name='"+ userLoggedIn +"'" +
+								  " SET u.name='"+ nombre +"'" +
+								  " SET u.phone='"+ numero +"'" +
+								  " SET u.email='"+ correoe +"'" +
+								  " RETURN u.name");
+						tx.success();
+						if(result1.hasNext()) {
+							userLoggedIn = nombre;
+							Alert alert = new Alert(AlertType.INFORMATION);
+							alert.setTitle("Éxito");
+							alert.setHeaderText("Se ha actualizado la información del usuario");
+							alert.showAndWait();
+						}
+					}
+				}else {
+					Result result1 = db.execute("MATCH (u:User)" +
+							  "WHERE u.name='"+ userLoggedIn +"'" +
+							  " SET u.name='"+ nombre +"'" +
+							  " SET u.phone='"+ numero +"'" +
+							  " SET u.email='"+ correoe +"'" +
+							  " RETURN u.name");
+					tx.success();
+					if(result1.hasNext()) {
+						userLoggedIn = nombre;
+						Alert alert = new Alert(AlertType.INFORMATION);
+						alert.setTitle("Éxito");
+						alert.setHeaderText("Se ha actualizado la información del usuario");
+						alert.showAndWait();
+					}
+				}
+			} finally {
+				tx.close();
+				db.shutdown();
 			}
 		}else if (verificado == false) {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -117,8 +162,8 @@ public class UserEditController {
 	public Boolean verificarDatos() {
 		try {
 			nombre = username.getText();
-			String numeroString = phone.getText();			
-			numero = Integer.parseInt(numeroString);
+			int numeroInt = Integer.parseInt(phone.getText());			
+			numero = phone.getText();
 			correoe = email.getText();
 		    return true;
 		} catch (Exception e) {
@@ -135,21 +180,21 @@ public class UserEditController {
 		
 	}
 	
-	public void goToHome(){
+	public void goToMovie(){
 		
 		main = new Main();
-		//main.changeToHome(userLoggedIn);
+		main.changeToMovie(userLoggedIn);
 		
 	}
 	
 	public void goToSearch(){
 		
 		main = new Main();
-		//main.changeToSearch(userLoggedIn);
+		main.changeToSearch(userLoggedIn);
 		
 	}
 	
-	public void goToPin(){
+	public void goToList(){
 		
 		main = new Main();
 		//main.changeToRecentPlace(userLoggedIn);
@@ -179,26 +224,26 @@ public class UserEditController {
 			db.shutdown();
 			//Botones
 			try {
-				ImageView accountImage = new ImageView(new Image(this.getClass().getResource("/application/Images/account.png").toString()));
+				ImageView accountImage = new ImageView(new Image(this.getClass().getResource("/images/account.png").toString()));
 				accountImage.setFitHeight(50);
 				accountImage.setFitWidth(50);
 				account.setGraphic(accountImage);
 				account.setDisable(true);
 				
-				ImageView homeImage = new ImageView(new Image(this.getClass().getResource("/application/Images/home.png").toString()));
-				homeImage.setFitHeight(50);
-				homeImage.setFitWidth(50);
-				home.setGraphic(homeImage);
+				ImageView movieImage = new ImageView(new Image(this.getClass().getResource("/images/movie.png").toString()));
+				movieImage.setFitHeight(50);
+				movieImage.setFitWidth(50);
+				movie.setGraphic(movieImage);
 				
-				ImageView searchImage = new ImageView(new Image(this.getClass().getResource("/application/Images/search.png").toString()));
+				ImageView searchImage = new ImageView(new Image(this.getClass().getResource("/images/search.png").toString()));
 				searchImage.setFitHeight(50);
 				searchImage.setFitWidth(50);
 				search.setGraphic(searchImage);
 	
-				ImageView pinImage = new ImageView(new Image(this.getClass().getResource("/application/Images/pin.png").toString()));
-				pinImage.setFitHeight(50);
-				pinImage.setFitWidth(50);
-				pin.setGraphic(pinImage);
+				ImageView listImage = new ImageView(new Image(this.getClass().getResource("/images/list.png").toString()));
+				listImage.setFitHeight(50);
+				listImage.setFitWidth(50);
+				list.setGraphic(listImage);
 			}catch (Exception e) {
 				// TODO: handle exception
 			}

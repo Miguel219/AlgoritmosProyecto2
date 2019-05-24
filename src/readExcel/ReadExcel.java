@@ -66,6 +66,8 @@ public class ReadExcel {
 			    for (int i = 1; i < records.size(); i++) {
 			    	String id = records.get(i).get(0);
 			    	String name = records.get(i).get(1);
+			    	if(name.contains("\""))
+			    		name = name.substring(1);
 			    	String actor = "";	
 			    	String director = "";
 			    	String producer = "";
@@ -86,7 +88,7 @@ public class ReadExcel {
 					
 					if(actor!="" && director!="" && producer!="") {
 						counter = counter + 1;
-						Movie currentMovie = new Movie(id, actor, director, producer, "", "", "");
+						Movie currentMovie = new Movie(id, name, actor, director, producer, "", "", "");
 						movies.add(currentMovie);
 					}
 				}
@@ -148,6 +150,7 @@ public class ReadExcel {
 			    		//Se crea el nodo de cada pelicula
 				    	Node node = db.createNode(Label.label("Movie"));
 				    	node.setProperty("id", movies.get(i).getId());
+				    	node.setProperty("name", movies.get(i).getName());
 				    	node.setProperty("actor", movies.get(i).getActor());
 				    	node.setProperty("director", movies.get(i).getDirector());
 				    	node.setProperty("producer", movies.get(i).getProducer());

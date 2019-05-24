@@ -28,9 +28,9 @@
             <ButtonBar layoutX="23.0" layoutY="478.0" prefHeight="58.0" prefWidth="216.0">
                <buttons>
                 <Button fx:id="account" mnemonicParsing="false" onAction="#goToAccount" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: lime;" />
-                <Button fx:id="home" mnemonicParsing="false" onAction="#goToHome" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: lime;" />
+                <Button fx:id="movie" mnemonicParsing="false" onAction="#goToMovie" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: lime;" />
                   <Button fx:id="search" mnemonicParsing="false" onAction="#goToSearch" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: lime;" />
-                  <Button fx:id="pin" mnemonicParsing="false" onAction="#goToPin" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: lime;" />                  
+                  <Button fx:id="list" mnemonicParsing="false" onAction="#goToList" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: lime;" />                  
                </buttons>
             </ButtonBar>
          </children>
