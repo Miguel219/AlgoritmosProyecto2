@@ -90,7 +90,7 @@ public class SearchUserController {
 					Map<String, Object> user = result.next();
 					String userName = (String) user.get("u.name");
 					
-					Label label = new Label(userName);
+					Label label = new Label(userName + "   ");
 					label.setFont(new Font(18));
 					Button button = new Button();
 					button.setId(userName);
@@ -107,10 +107,10 @@ public class SearchUserController {
 						}
 					});
 					Region p = new Region();
-					p.setPrefSize(347.0, 4.0);
-					Line line = new Line(0, 0, 350, 0);
+					p.setPrefSize(497.0, 4.0);
+					Line line = new Line(0, 0, 500, 0);
 					Region p1 = new Region();
-					p1.setPrefSize(347.0, 4.0);
+					p1.setPrefSize(497.0, 4.0);
 					//Se agregan al FlowPane
 					searchFlowPane.getChildren().add(label);
 					searchFlowPane.getChildren().add(button);
@@ -176,7 +176,7 @@ public class SearchUserController {
 	public void goToList(){
 		
 		main = new Main();
-		//main.changeToRecentPlace(userLoggedIn);
+		main.changeToMyList(userLoggedIn);
 		
 	}
 	

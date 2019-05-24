@@ -206,7 +206,7 @@ public class SearchMovieController {
 	public void goToList(){
 		
 		main = new Main();
-		//main.changeToRecentPlace(userLoggedIn);
+		main.changeToMyList(userLoggedIn);
 		
 	}
 	

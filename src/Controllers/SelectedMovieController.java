@@ -62,6 +62,8 @@ public class SelectedMovieController {
 	@FXML
 	private Label actor;
 	@FXML
+	private Label genre;
+	@FXML
 	private Label director;
 	@FXML
 	private Label producer;
@@ -97,7 +99,7 @@ public class SelectedMovieController {
 			Result result = db.execute(
 					  "MATCH (m:Movie)" +
 					  "WHERE m.id = '"+ movieId +"'" +
-					  "RETURN m.name, m.date, m.actor, m.director, m.producer, m.qualification, m.popularity");
+					  "RETURN m.name, m.genre, m.date, m.actor, m.director, m.producer, m.qualification, m.popularity");
 			tx.success();
 			if(result.hasNext()) {
 				Map<String, Object> movie = result.next();
@@ -105,6 +107,7 @@ public class SelectedMovieController {
 				name.setText((String) movie.get("m.name"));
 				date.setText((String) movie.get("m.date"));
 				actor.setText("Actor: "+ (String) movie.get("m.actor"));
+				genre.setText("Género: "+ (String) movie.get("m.genre"));
 				director.setText("Director: "+ (String) movie.get("m.director"));
 				producer.setText("Productor: "+ (String) movie.get("m.producer"));
 				qualification.setText("Calificación: "+ (String) movie.get("m.qualification"));
@@ -234,7 +237,7 @@ public class SelectedMovieController {
 
 		db.shutdown();
 		main = new Main();
-		//main.changeToRecentPlace(userLoggedIn);
+		main.changeToMyList(userLoggedIn);
 		
 	}
 	

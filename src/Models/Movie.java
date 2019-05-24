@@ -4,6 +4,7 @@ public class Movie {
 
 	private String id;
 	private String name;
+	private String genre;
 	private String actor;
 	private String director;
 	private String producer;
@@ -15,6 +16,7 @@ public class Movie {
 		// TODO Auto-generated constructor stub
 		id = "";
 		name = "";
+		genre = "";
 		actor = "";
 		director = "";
 		producer = "";
@@ -25,9 +27,12 @@ public class Movie {
 
 
 
+
+
 	/**
 	 * @param id
 	 * @param name
+	 * @param genre
 	 * @param actor
 	 * @param director
 	 * @param producer
@@ -35,11 +40,12 @@ public class Movie {
 	 * @param date
 	 * @param popularity
 	 */
-	public Movie(String id, String name, String actor, String director, String producer, String qualification,
-			String date, String popularity) {
+	public Movie(String id, String name, String genre, String actor, String director, String producer,
+			String qualification, String date, String popularity) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.genre = genre;
 		this.actor = actor;
 		this.director = director;
 		this.producer = producer;
@@ -47,6 +53,8 @@ public class Movie {
 		this.date = date;
 		this.popularity = popularity;
 	}
+
+
 
 
 
@@ -76,6 +84,20 @@ public class Movie {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the genre
+	 */
+	public String getGenre() {
+		return genre;
+	}
+
+	/**
+	 * @param genre the genre to set
+	 */
+	public void setGenre(String genre) {
+		this.genre = genre;
 	}
 
 	/**
@@ -167,8 +189,8 @@ public class Movie {
 	 */
 	@Override
 	public String toString() {
-		return "Movie [id=" + id + ", name=" + name + ", actor=" + actor + ", director=" + director + ", producer="
-				+ producer + ", qualification=" + qualification + ", date=" + date + ", popularity=" + popularity + "]";
+		return "Movie [id=" + id + ", name=" + name + ", genre=" + genre + ", actor=" + actor + ", director=" + director
+				+ ", producer=" + producer + ", qualification=" + qualification + ", date=" + date + ", popularity="
+				+ popularity + "]";
 	}
-
 }

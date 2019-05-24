@@ -111,6 +111,48 @@ public class Main extends Application {
 		}
 	}
 	
+	public void changeToMyList(String userName) {
+		try {
+			
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("/Views/MyList.fxml"));
+			Parent newScene = loader.load();
+			
+			//Se envian los datos del usuario
+			MyListController mlc = loader.getController();
+			mlc.setUserLoggedIn(userName);
+			mlc.llenarClase();
+			
+			Scene scene = new Scene(newScene,400,550);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void changeToRecommendedByList(String userName) {
+		try {
+			
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("/Views/RecommendedByList.fxml"));
+			Parent newScene = loader.load();
+			
+			//Se envian los datos del usuario
+			RecommendedByListController rblc = loader.getController();
+			rblc.setUserLoggedIn(userName);
+			rblc.llenarClase();
+			
+			Scene scene = new Scene(newScene,400,550);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}

@@ -95,7 +95,7 @@ public class ReadExcel {
 					
 					if(actor!="" && director!="" && producer!="") {
 						counter = counter + 1;
-						Movie currentMovie = new Movie(id, name, actor, director, producer, "", "", "");
+						Movie currentMovie = new Movie(id, name, "", actor, director, producer, "", "", "");
 						movies.add(currentMovie);
 					}
 				}
@@ -114,6 +114,17 @@ public class ReadExcel {
 			    	String qualification = records2.get(i).get(records2.get(i).size() - 2);	
 			    	String date = "";
 			    	String popularity = "";
+			    	String genre = records2.get(i).get(2);
+			    	if(genre.contains("name")) {
+			    		String[] genres = genre.split("\"");
+						if(genres.length >= 3) {
+							genre = genres[6];
+						}else {
+							genre = "";
+						}
+			    	}else {
+						genre = "";
+					}
 			    	while((currentId == "" || date == ""  || popularity == "") && j<=records2.get(i).size()) {
 			    		try {
 			    			if(currentId == "") {
@@ -130,12 +141,12 @@ public class ReadExcel {
 			    			j = j +1;
 						}
 			    	}
-			    	
-			    	if(currentId != "" && qualification != "" && date != "" && popularity != "") {
+			    	if(currentId != "" && qualification != "" && date != "" && popularity != "" && genre != "") {
 			    		for (int k = 0; k < movies.size(); k++) {
 							if(movies.get(k).getId().equals(currentId)) {
 								Movie currentMovie = movies.get(k);
 								currentMovie.setQualification(qualification);
+								currentMovie.setGenre(genre);
 								currentMovie.setDate(date);
 								currentMovie.setPopularity(popularity);
 								movies.set(k, currentMovie);
@@ -158,6 +169,7 @@ public class ReadExcel {
 				    	Node node = db.createNode(Label.label("Movie"));
 				    	node.setProperty("id", movies.get(i).getId());
 				    	node.setProperty("name", movies.get(i).getName());
+				    	node.setProperty("genre", movies.get(i).getGenre());
 				    	node.setProperty("actor", movies.get(i).getActor());
 				    	node.setProperty("director", movies.get(i).getDirector());
 				    	node.setProperty("producer", movies.get(i).getProducer());

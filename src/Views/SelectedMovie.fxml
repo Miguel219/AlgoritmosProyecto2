@@ -28,32 +28,37 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="director" layoutX="50.0" layoutY="155.0" prefHeight="27.0" prefWidth="316.0" text="Director:" textAlignment="CENTER" textFill="#00c206">
+            <Label fx:id="director" layoutX="50.0" layoutY="195.0" prefHeight="27.0" prefWidth="316.0" text="Director:" textAlignment="CENTER" textFill="#00c206">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="producer" layoutX="50.0" layoutY="205.0" prefHeight="27.0" prefWidth="316.0" text="Productor:" textAlignment="CENTER" textFill="#00c206">
+            <Label fx:id="producer" layoutX="50.0" layoutY="245.0" prefHeight="27.0" prefWidth="316.0" text="Productor:" textAlignment="CENTER" textFill="#00c206">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="qualification" layoutX="50.0" layoutY="251.0" prefHeight="27.0" prefWidth="316.0" text="Calificación:" textAlignment="CENTER" textFill="#00c206">
+            <Label fx:id="qualification" layoutX="50.0" layoutY="291.0" prefHeight="27.0" prefWidth="316.0" text="Calificación:" textAlignment="CENTER" textFill="#00c206">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="actor" layoutX="50.0" layoutY="110.0" prefHeight="27.0" prefWidth="316.0" text="Actor:" textAlignment="CENTER" textFill="#00c206">
+            <Label fx:id="actor" layoutX="50.0" layoutY="108.0" prefHeight="27.0" prefWidth="316.0" text="Actor:" textAlignment="CENTER" textFill="#00c206">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="popularity" layoutX="50.0" layoutY="300.0" prefHeight="27.0" prefWidth="316.0" text="Popularidad:" textAlignment="CENTER" textFill="#00c206">
+            <Label fx:id="popularity" layoutX="50.0" layoutY="340.0" prefHeight="27.0" prefWidth="316.0" text="Popularidad:" textAlignment="CENTER" textFill="#00c206">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button fx:id="agregarLista" layoutX="154.0" layoutY="353.0" mnemonicParsing="false" style="-fx-background-color: lime;" text="Agregar a la Lista" />
+            <Button fx:id="agregarLista" layoutX="143.0" layoutY="389.0" mnemonicParsing="false" style="-fx-background-color: lime;" text="Agregar a la Lista" />
+            <Label fx:id="genre" layoutX="50.0" layoutY="151.0" prefHeight="27.0" prefWidth="316.0" text="Género:" textAlignment="CENTER" textFill="#00c206">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </top>
