@@ -53,12 +53,13 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button fx:id="agregarLista" layoutX="143.0" layoutY="389.0" mnemonicParsing="false" style="-fx-background-color: lime;" text="Agregar a la Lista" />
+            <Button fx:id="agregarLista" layoutX="143.0" layoutY="387.0" mnemonicParsing="false" style="-fx-background-color: lime;" text="Agregar a la Lista" />
             <Label fx:id="genre" layoutX="50.0" layoutY="151.0" prefHeight="27.0" prefWidth="316.0" text="Género:" textAlignment="CENTER" textFill="#00c206">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
+            <Button layoutX="66.0" layoutY="428.0" mnemonicParsing="false" onAction="#goToRecommendedByMovie" style="-fx-background-color: lime;" text="Ver recomendaciones según esta película" />
          </children>
       </AnchorPane>
    </top>
