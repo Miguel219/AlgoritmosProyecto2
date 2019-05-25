@@ -85,7 +85,9 @@ public class LoginInController {
 			} finally {
 				tx.close();
 				db.shutdown();
-				main.changeToUserEdit(userName);
+				if(main!=null) {
+					main.changeToUserEdit(userName);
+				}
 			}
 		}else if (verificado == false) {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -117,5 +119,6 @@ public class LoginInController {
 		window.setScene(scene);
 		window.show();
 	}
+	
 }
 	

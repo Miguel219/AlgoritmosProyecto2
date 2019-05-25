@@ -9,7 +9,10 @@ import java.util.Map;
 
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -180,6 +183,13 @@ public class UserEditController {
 		
 	}
 	
+	public void salirUsuario(){
+		
+		main = new Main();
+		main.changeToLogin();
+		
+	}
+
 	public void goToMovie(){
 		
 		main = new Main();

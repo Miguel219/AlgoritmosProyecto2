@@ -46,7 +46,23 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-	
+	public void changeToLogin() {
+		try {
+			
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("/Views/Login.fxml"));
+			Parent newScene = loader.load();
+			//Se envian los datos del usuario
+			
+			
+			Scene scene = new Scene(newScene,400,550);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public void changeToSearch(String userName) {
 		try {
 			
